@@ -3,7 +3,11 @@ STDOUT.print <<HELP
   Ruby SQLite GUI Help
   --------------------
 
-  Usage: ruby ruby_sqlite.rb [database_file]
+  Usage: ruby ruby_sqlite.rb [options] [database_file]
+
+  Options:
+    -s2
+        Uses the sqlite2 store instead of sqlite3
 
   Important notes:
     Operations on the database are not like operations

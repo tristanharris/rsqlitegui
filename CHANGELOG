@@ -1,5 +1,6 @@
 12.04.2006
   - Use windows environment variable for temp dir
+  - Added commandline option to use sqlite2 instead of sqlite3
 
 10.04.2006
   - Uploaded to Rubyforge

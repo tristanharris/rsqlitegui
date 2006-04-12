@@ -25,11 +25,12 @@ end
 Gtk.init
 
 class RSQLite
-  def initialize
+  def initialize(adapter='sqlite3')
     @glade = GladeXML.new( File.join( File::dirname(__FILE__), 'rsqlite.glade' ) ) { |handler| method(handler) }
     @tables   = @glade['tables']
     @db_table = @glade['table']
     @columns  = @glade['columns']
+    @adapter  = adapter
     create_tables_view
     new_database
   end
@@ -51,7 +52,7 @@ class RSQLite
 
   def open_database(dbfile)
     begin
-      ActiveRecord::Base.establish_connection( { :adapter => 'sqlite', :dbfile => dbfile } )
+      ActiveRecord::Base.establish_connection( { :adapter => @adapter, :dbfile => dbfile } )
       @conn = ActiveRecord::Base.connection
     rescue ActiveRecord::AdapterNotFound
       display_error_dialog("The SQLite adapter is not installed.")
@@ -494,8 +495,12 @@ end
 if ARGV[0] == '-h' or ARGV[0] == '--help'
   load File.join( File::dirname(__FILE__), "help.rb" )
   exit
+elsif ARGV[0] == '-s2'
+  $adapter = 'sqlite'
+  ARGV.delete('-s2')
 end
+$adapter ||= 'sqlite3'
 
-app = RSQLite.new
+app = RSQLite.new($adapter)
 app.open_database(ARGV[0]) if ARGV[0]
 Gtk.main
