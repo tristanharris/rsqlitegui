@@ -1,2 +1,5 @@
+12.04.2006
+  - Use windows environment variable for temp dir
+
 10.04.2006
   - Uploaded to Rubyforge

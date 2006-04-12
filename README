@@ -9,4 +9,13 @@ Requires:
   - ActiveRecord (http://rubyforge.org/projects/activerecord)
 
 Install:
-  1. [sudo] ruby install.rb [--prefix=install_dir]
+  Linux:
+    1. [sudo] ruby install.rb [--prefix=install_dir]
+  Windows:
+    1. Nothing. Make shortcuts if you wish.
+
+Usage:
+  ruby_sqlite [database]
+
+For more information, please go to http://rsqlitegui.rubyforge.org
+or type 'ruby_sqlite help'

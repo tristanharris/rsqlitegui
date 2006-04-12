@@ -979,6 +979,7 @@ Options:</property>
 	      <child>
 		<widget class="GtkButton" id="edit_column">
 		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Edit selected column</property>
 		  <property name="can_focus">True</property>
 		  <property name="label">gtk-edit</property>
 		  <property name="use_stock">True</property>
@@ -996,6 +997,7 @@ Options:</property>
 	      <child>
 		<widget class="GtkButton" id="cancel_table">
 		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Cancel and return</property>
 		  <property name="can_focus">True</property>
 		  <property name="label">gtk-cancel</property>
 		  <property name="use_stock">True</property>
