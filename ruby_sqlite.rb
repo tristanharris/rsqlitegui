@@ -55,7 +55,7 @@ class RSQLite
       ActiveRecord::Base.establish_connection( { :adapter => @adapter, :dbfile => dbfile } )
       @conn = ActiveRecord::Base.connection
     rescue ActiveRecord::AdapterNotFound
-      display_error_dialog("The SQLite adapter is not installed.")
+      display_error_dialog("The #{@adapter} adapter is not installed.")
       return
     end
     tables = @conn.tables or Array.new # temp db will have no tables to begin with
@@ -75,7 +75,7 @@ class RSQLite
         FileUtils.copy(@dbfile, dialog.filename)
         @dbfile = dialog.filename
         @glade['SQLite'].title = "Ruby SQLite - #{@dbfile}"
-        ActiveRecord::Base.establish_connection( { :adapter => 'sqlite', :dbfile => @dbfile } )
+        ActiveRecord::Base.establish_connection( { :adapter => @adapter, :dbfile => @dbfile } )
       rescue RuntimeError => error
         display_error_dialog(error)
       end
