@@ -36,7 +36,7 @@ class RSQLite
   end
 
   def new_database(widget=nil)
-    temp_file = PLATFORM.scan(/linux/) ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + 'rsqlite_temp.db'
+    temp_file = PLATFORM.match(/linux/) ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + 'rsqlite_temp.db'
     File.open(temp_file, 'w') { '' }
     open_database(temp_file)
   end
@@ -84,7 +84,7 @@ class RSQLite
   end
 
   def quit(widget)
-    temp_file = PLATFORM.scan(/linux/) ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + '\rsqlite_temp.db'
+    temp_file = PLATFORM.match(/linux/) ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + '\rsqlite_temp.db'
     FileUtils.remove(temp_file) if FileTest.exist?(temp_file)
     Gtk.main_quit
   end
