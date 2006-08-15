@@ -15,7 +15,7 @@ Install:
     1. Nothing. Make shortcuts if you wish.
 
 Usage:
-  ruby_sqlite [database]
+  rsqlitegui [options] [database]
 
 For more information, please go to http://rsqlitegui.rubyforge.org
-or type 'ruby_sqlite help'
+or type 'rsqlitegui --help'

@@ -10,23 +10,17 @@
 require 'gtk2'
 require 'libglade2'
 require 'fileutils'
+begin require 'rubygems'; rescue LoadError; end
 begin
-  require 'rubygems'
-  require_gem 'activerecord'
+  require 'active_record'
 rescue LoadError
-  begin
-    require 'active_record'
-  rescue LoadError
-    puts "ActiveRecord is not installed."
-    exit
-  end
+  puts "ActiveRecord is not installed."
+  exit
 end
-
-Gtk.init
 
 class RSQLite
   def initialize(adapter='sqlite3')
-    @glade = GladeXML.new( File.join( File::dirname(__FILE__), 'rsqlite.glade' ) ) { |handler| method(handler) }
+    @glade = GladeXML.new( File.join( File::dirname(__FILE__), 'rsqlitegui.glade' ) ) { |handler| method(handler) }
     @tables   = @glade['tables']
     @db_table = @glade['table']
     @columns  = @glade['columns']
@@ -36,7 +30,7 @@ class RSQLite
   end
 
   def new_database(widget=nil)
-    temp_file = PLATFORM.match(/linux/) ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + 'rsqlite_temp.db'
+    temp_file = PLATFORM =~ /linux/ ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + 'rsqlite_temp.db'
     File.open(temp_file, 'w') { '' }
     open_database(temp_file)
   end
@@ -62,7 +56,7 @@ class RSQLite
     populate_tables_view(tables)
     @tables.set_cursor( Gtk::TreePath.new('0'), nil, false )
     @dbfile = dbfile
-    @glade['rsqlite'].title = "rSQLite - #{@dbfile}"
+    @glade['rsqlite'].title = "rSQLiteGUI - #{@dbfile}"
   end
 
   def save_database_as(widget)
@@ -74,7 +68,7 @@ class RSQLite
       begin
         FileUtils.copy(@dbfile, dialog.filename)
         @dbfile = dialog.filename
-        @glade['SQLite'].title = "Ruby SQLite - #{@dbfile}"
+        @glade['rsqlite'].title = "rSQLiteGUI - #{@dbfile}"
         ActiveRecord::Base.establish_connection( { :adapter => @adapter, :dbfile => @dbfile } )
       rescue RuntimeError => error
         display_error_dialog(error)
@@ -84,7 +78,7 @@ class RSQLite
   end
 
   def quit(widget)
-    temp_file = PLATFORM.match(/linux/) ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + '\rsqlite_temp.db'
+    temp_file = PLATFORM =~ /linux/ ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + '\rsqlite_temp.db'
     FileUtils.remove(temp_file) if FileTest.exist?(temp_file)
     Gtk.main_quit
   end
@@ -228,7 +222,7 @@ class RSQLite
 
   def drop_table(widget)
     return unless current_table
-    message = "Are you sure you want to drop the table '#{current_table}'"
+    message = "Are you sure you want to drop the table '#{current_table}'?"
     if display_confirm_dialog(message)
       @conn.drop_table(current_table)
       @tables.model.remove( @tables.model.get_iter( @tables.cursor[0] ) )
@@ -242,6 +236,7 @@ class RSQLite
       @current_table = new_name
       iter = @tables.model.get_iter( @tables.cursor[0] )
       iter.set_value(0, new_name)
+      @tables.grab_focus
     end
   end
 
@@ -282,7 +277,7 @@ class RSQLite
       5.times { |i| iter.set_value( i, column_data[i] ) }
       clear_column_details
     else
-      display_dialog("The column must have a name.")
+      display_error_dialog("The column must have a name.")
     end
   end
 
@@ -303,6 +298,7 @@ class RSQLite
     @glade['column_default'].text = iter.get_value(3)
     @glade['column_options'].active = options[ iter.get_value(4) ]
     @columns.model.remove(iter)
+    @glade['column_name'].grab_focus
   end
 
   def apply_changes(widget)
@@ -344,6 +340,7 @@ class RSQLite
         hide_table_view(nil)
         iter = @tables.model.append
         iter.set_value(0, table_name)
+        @tables.set_cursor(iter.path, nil, false)
       rescue ActiveRecord::StatementInvalid => error
         display_error_dialog(error)
       end
@@ -363,6 +360,10 @@ class RSQLite
   def display_confirm_dialog(message)
     md = Gtk::MessageDialog; modal = Gtk::Dialog::Flags::MODAL
     dialog = md.new(nil, modal, md::QUESTION, md::BUTTONS_YES_NO, message)
+    dialog.signal_connect('key_press_event') do |widget, event|
+      dialog.response(md::RESPONSE_NO) \
+        if event.keyval == Gdk::Keyval::GDK_Escape
+    end
     response = dialog.run; dialog.destroy
     return response == md::RESPONSE_YES
   end
@@ -372,6 +373,10 @@ class RSQLite
               [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT],
               [Gtk::Stock::OK,     Gtk::Dialog::RESPONSE_ACCEPT] )
     dialog.default_response = Gtk::Dialog::RESPONSE_ACCEPT
+    dialog.signal_connect('key_press_event') do |widget, event|
+      dialog.response(Gtk::Dialog::RESPONSE_REJECT) \
+        if event.keyval == Gdk::Keyval::GDK_Escape
+    end
 
     label = Gtk::Label.new(label).show
     entry = Gtk::Entry.new.show
@@ -387,15 +392,19 @@ class RSQLite
     input = entry.text
     dialog.destroy
 
-    return nil if response == Gtk::Dialog::RESPONSE_REJECT
-    return ( input.strip.empty? ) ? nil : input
+    return nil if response != Gtk::Dialog::RESPONSE_ACCEPT
+    return input.strip.empty? ? nil : input
   end
 
   def display_sql_dialog(sql_text=nil)
-    dialog = Gtk::Dialog.new( "SQL", nil, Gtk::Dialog::MODAL,
+    dialog = Gtk::Dialog.new( 'SQL', nil, Gtk::Dialog::MODAL,
               [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT],
               [Gtk::Stock::OK,     Gtk::Dialog::RESPONSE_ACCEPT] )
     dialog.default_response = Gtk::Dialog::RESPONSE_ACCEPT
+    dialog.signal_connect('key_press_event') do |widget, event|
+      dialog.response(Gtk::Dialog::RESPONSE_REJECT) \
+        if event.keyval == Gdk::Keyval::GDK_Escape
+    end
 
     container = Gtk::ScrolledWindow.new.show
     container.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC)
@@ -420,10 +429,13 @@ class RSQLite
     return ( input.strip.empty? ) ? nil : input
   end
 
-  def display_fields_dialog(fields, title='SQLite', values=nil)
+  def display_fields_dialog(fields, title='rSQLiteGUI', values=nil)
     window = Gtk::Window.new(title)
     window.modal = true
     window.set_border_width(5)
+    window.signal_connect('key_press_event') do |widget, event|
+      window.destroy if event.keyval == Gdk::Keyval::GDK_Escape
+    end
 
     container = Gtk::ScrolledWindow.new
     container.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC)
@@ -435,6 +447,7 @@ class RSQLite
       label = Gtk::Label.new(field.name)
       entry = Gtk::Entry.new
       entry.text = values[i] unless values.nil?
+      entry.activates_default = true
       table.attach(label, 0, 1, i, i + 1, Gtk::FILL, Gtk::FILL, 5, 5)
       table.attach(entry, 1, 2, i, i + 1, Gtk::FILL | Gtk::EXPAND, Gtk::FILL | Gtk::EXPAND, 5, 5)
       entries << entry
@@ -459,6 +472,7 @@ class RSQLite
     height = ( 40 * fields.size > 480 ) ? 480 : 40 * fields.size + 40
     window.set_size_request(320, height)
     window.show_all
+    apply.has_default = apply.can_default = true
   end
 
   def row_action(entries, create=true)
@@ -492,15 +506,24 @@ class RSQLite
 
 end
 
-if ARGV[0] == '-h' or ARGV[0] == '--help'
-  load File.join( File::dirname(__FILE__), "help.rb" )
-  exit
-elsif ARGV[0] == '-s2'
-  $adapter = 'sqlite'
-  ARGV.delete('-s2')
-end
-$adapter ||= 'sqlite3'
+# Ruby-Gnome2-0.15 calls Gtk.init upon 'require'
+# of gtk2, passing ARGV, so process ARGV for this
+# application first
+BEGIN {
+  $adapter = 'sqlite3'
+  case ARGV.first
+  when '-h', '--help'
+    load File.join( File::dirname(__FILE__), "help.rb" )
+    exit
+  when '-s2', '--sqlite2'
+    $adapter = 'sqlite'
+    ARGV.shift
+  end
+}
 
-app = RSQLite.new($adapter)
-app.open_database(ARGV[0]) if ARGV[0]
-Gtk.main
+if __FILE__ == $0
+  Gtk.init
+  app = RSQLite.new($adapter)
+  app.open_database(ARGV.first) if ARGV.first
+  Gtk.main
+end

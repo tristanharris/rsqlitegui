@@ -19,7 +19,6 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
-  <property name="urgency_hint">False</property>
   <signal name="destroy" handler="quit" last_modification_time="Tue, 28 Mar 2006 02:31:35 GMT"/>
 
   <child>
@@ -47,6 +46,8 @@
 	      <child>
 		<widget class="GtkTreeView" id="tables">
 		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Database Tables
+[Focus: Ctrl+T]</property>
 		  <property name="can_focus">True</property>
 		  <property name="headers_visible">True</property>
 		  <property name="rules_hint">True</property>
@@ -56,6 +57,7 @@
 		  <property name="hover_selection">False</property>
 		  <property name="hover_expand">False</property>
 		  <signal name="cursor_changed" handler="select_table" last_modification_time="Sat, 25 Mar 2006 14:58:28 GMT"/>
+		  <accelerator key="T" modifiers="GDK_CONTROL_MASK" signal="grab_focus"/>
 		</widget>
 	      </child>
 	    </widget>
@@ -75,11 +77,13 @@
 	      <child>
 		<widget class="GtkButton" id="add_table">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Add table</property>
+		  <property name="tooltip" translatable="yes">Add table
+[Ctrl+Shift+A]</property>
 		  <property name="can_focus">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="add_table" last_modification_time="Sat, 25 Mar 2006 14:58:44 GMT"/>
+		  <accelerator key="A" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="clicked"/>
 
 		  <child>
 		    <widget class="GtkImage" id="image1">
@@ -103,11 +107,13 @@
 	      <child>
 		<widget class="GtkButton" id="drop_table">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Drop table</property>
+		  <property name="tooltip" translatable="yes">Drop table
+[Ctrl+Shift+D]</property>
 		  <property name="can_focus">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="drop_table" last_modification_time="Sat, 25 Mar 2006 14:58:56 GMT"/>
+		  <accelerator key="D" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="clicked"/>
 
 		  <child>
 		    <widget class="GtkImage" id="image2">
@@ -131,11 +137,13 @@
 	      <child>
 		<widget class="GtkButton" id="rename_table">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Rename table</property>
+		  <property name="tooltip" translatable="yes">Rename table
+[Ctrl+Shift+R]</property>
 		  <property name="can_focus">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="rename_table" last_modification_time="Sat, 25 Mar 2006 15:56:18 GMT"/>
+		  <accelerator key="R" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="clicked"/>
 
 		  <child>
 		    <widget class="GtkImage" id="image3">
@@ -187,12 +195,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_new">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">New database</property>
+		  <property name="tooltip" translatable="yes">New database
+[Ctrl+N]</property>
 		  <property name="stock_id">gtk-new</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="new_database" last_modification_time="Sat, 25 Mar 2006 14:33:41 GMT"/>
+		  <accelerator key="N" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -203,12 +213,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_open">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Open database</property>
+		  <property name="tooltip" translatable="yes">Open database
+[Ctrl+O]</property>
 		  <property name="stock_id">gtk-open</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="open_dialog" last_modification_time="Sat, 25 Mar 2006 14:34:08 GMT"/>
+		  <accelerator key="O" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -219,12 +231,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_save_as">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Save database as...</property>
+		  <property name="tooltip" translatable="yes">Save database as...
+[Ctrl+Shift+S]</property>
 		  <property name="stock_id">gtk-save-as</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="save_database_as" last_modification_time="Sat, 25 Mar 2006 14:34:20 GMT"/>
+		  <accelerator key="S" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -248,12 +262,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_add_row">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Add new row</property>
+		  <property name="tooltip" translatable="yes">Add new row
+[Ctrl+A]</property>
 		  <property name="stock_id">gtk-add</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="add_row" last_modification_time="Sat, 25 Mar 2006 14:34:27 GMT"/>
+		  <accelerator key="A" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -264,12 +280,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_remove_row">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Remove selected row</property>
+		  <property name="tooltip" translatable="yes">Remove selected row
+[Ctrl+D]</property>
 		  <property name="stock_id">gtk-remove</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="remove_row" last_modification_time="Sat, 25 Mar 2006 14:34:34 GMT"/>
+		  <accelerator key="D" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -280,12 +298,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_edit_row">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Edit selected row</property>
+		  <property name="tooltip" translatable="yes">Edit selected row
+[Ctrl+E]</property>
 		  <property name="stock_id">gtk-edit</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="edit_row" last_modification_time="Sat, 25 Mar 2006 14:34:40 GMT"/>
+		  <accelerator key="E" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -309,12 +329,14 @@
 	      <child>
 		<widget class="GtkToolButton" id="tool_execute_sql">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Execute SQL</property>
+		  <property name="tooltip" translatable="yes">Execute SQL
+[Ctrl+X]</property>
 		  <property name="stock_id">gtk-execute</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="execute_sql" last_modification_time="Wed, 29 Mar 2006 12:20:17 GMT"/>
+		  <accelerator key="X" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -341,6 +363,8 @@
 	      <child>
 		<widget class="GtkTreeView" id="table">
 		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Table Rows
+[Focus: Ctrl+V]</property>
 		  <property name="can_focus">True</property>
 		  <property name="headers_visible">True</property>
 		  <property name="rules_hint">True</property>
@@ -350,6 +374,7 @@
 		  <property name="hover_selection">False</property>
 		  <property name="hover_expand">False</property>
 		  <signal name="row_activated" handler="edit_row" last_modification_time="Sat, 25 Mar 2006 16:41:14 GMT"/>
+		  <accelerator key="V" modifiers="GDK_CONTROL_MASK" signal="grab_focus"/>
 		</widget>
 	      </child>
 	    </widget>
@@ -384,7 +409,6 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
-  <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="hide_table_view" last_modification_time="Tue, 28 Mar 2006 02:30:26 GMT"/>
 
   <child>
@@ -406,8 +430,8 @@
 	  <child>
 	    <widget class="GtkLabel" id="label4">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Column:</property>
-	      <property name="use_underline">False</property>
+	      <property name="label" translatable="yes">Colu_mn:</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -416,6 +440,7 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="mnemonic_widget">column_name</property>
 	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 	      <property name="width_chars">-1</property>
 	      <property name="single_line_mode">False</property>
@@ -434,8 +459,8 @@
 	  <child>
 	    <widget class="GtkLabel" id="label5">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Type:</property>
-	      <property name="use_underline">False</property>
+	      <property name="label" translatable="yes">T_ype:</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -462,8 +487,8 @@
 	  <child>
 	    <widget class="GtkLabel" id="label6">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Size:</property>
-	      <property name="use_underline">False</property>
+	      <property name="label" translatable="yes">_Size:</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -472,6 +497,7 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="mnemonic_widget">column_size</property>
 	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 	      <property name="width_chars">-1</property>
 	      <property name="single_line_mode">False</property>
@@ -490,8 +516,8 @@
 	  <child>
 	    <widget class="GtkLabel" id="label7">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Default:</property>
-	      <property name="use_underline">False</property>
+	      <property name="label" translatable="yes">_Default:</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -500,6 +526,7 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="mnemonic_widget">column_default</property>
 	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 	      <property name="width_chars">-1</property>
 	      <property name="single_line_mode">False</property>
@@ -518,8 +545,8 @@
 	  <child>
 	    <widget class="GtkLabel" id="label8">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Options:</property>
-	      <property name="use_underline">False</property>
+	      <property name="label" translatable="yes">O_ptions:</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -643,12 +670,15 @@ boolean</property>
 	  <child>
 	    <widget class="GtkButton" id="add_column">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Add/Edit Column
+[Ctrl+O]</property>
 	      <property name="can_default">True</property>
 	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="add_column" last_modification_time="Tue, 28 Mar 2006 01:50:58 GMT"/>
+	      <accelerator key="O" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 
 	      <child>
 		<widget class="GtkAlignment" id="alignment1">
@@ -747,8 +777,8 @@ not null</property>
 	    <widget class="GtkLabel" id="label11">
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">Table
-Name:</property>
-	      <property name="use_underline">False</property>
+_Name:</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -757,6 +787,7 @@ Name:</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="mnemonic_widget">table_name</property>
 	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 	      <property name="width_chars">-1</property>
 	      <property name="single_line_mode">False</property>
@@ -819,9 +850,9 @@ Name:</property>
 	  <child>
 	    <widget class="GtkLabel" id="label12">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Extra
+	      <property name="label" translatable="yes">E_xtra
 Options:</property>
-	      <property name="use_underline">False</property>
+	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
@@ -830,6 +861,7 @@ Options:</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="mnemonic_widget">temporary_table</property>
 	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 	      <property name="width_chars">-1</property>
 	      <property name="single_line_mode">False</property>
@@ -908,6 +940,8 @@ Options:</property>
 	      <child>
 		<widget class="GtkTreeView" id="columns">
 		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Table Columns
+[Focus: Ctrl+V]</property>
 		  <property name="can_focus">True</property>
 		  <property name="headers_visible">True</property>
 		  <property name="rules_hint">True</property>
@@ -916,6 +950,8 @@ Options:</property>
 		  <property name="fixed_height_mode">False</property>
 		  <property name="hover_selection">False</property>
 		  <property name="hover_expand">False</property>
+		  <accelerator key="V" modifiers="GDK_CONTROL_MASK" signal="grab_focus"/>
+		  <accelerator key="V" modifiers="GDK_MOD1_MASK" signal="grab_focus"/>
 		</widget>
 	      </child>
 	    </widget>
@@ -961,13 +997,15 @@ Options:</property>
 	      <child>
 		<widget class="GtkButton" id="remove_column">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Remove selected column</property>
+		  <property name="tooltip" translatable="yes">Remove selected column
+[Ctrl+D]</property>
 		  <property name="can_focus">True</property>
 		  <property name="label">gtk-remove</property>
 		  <property name="use_stock">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="remove_column" last_modification_time="Tue, 28 Mar 2006 01:51:06 GMT"/>
+		  <accelerator key="D" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -979,13 +1017,15 @@ Options:</property>
 	      <child>
 		<widget class="GtkButton" id="edit_column">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Edit selected column</property>
+		  <property name="tooltip" translatable="yes">Edit selected column
+[Ctrl+E]</property>
 		  <property name="can_focus">True</property>
 		  <property name="label">gtk-edit</property>
 		  <property name="use_stock">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="edit_column" last_modification_time="Tue, 28 Mar 2006 12:38:41 GMT"/>
+		  <accelerator key="E" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -997,13 +1037,16 @@ Options:</property>
 	      <child>
 		<widget class="GtkButton" id="cancel_table">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Cancel and return</property>
+		  <property name="tooltip" translatable="yes">Cancel and return
+[Escape]</property>
 		  <property name="can_focus">True</property>
 		  <property name="label">gtk-cancel</property>
 		  <property name="use_stock">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="hide_table_view" last_modification_time="Tue, 28 Mar 2006 12:51:14 GMT"/>
+		  <accelerator key="C" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
+		  <accelerator key="Escape" modifiers="0" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -1015,13 +1058,15 @@ Options:</property>
 	      <child>
 		<widget class="GtkButton" id="apply_table">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Apply changes</property>
+		  <property name="tooltip" translatable="yes">Apply changes
+[Ctrl+A]</property>
 		  <property name="can_focus">True</property>
 		  <property name="label">gtk-apply</property>
 		  <property name="use_stock">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
 		  <signal name="clicked" handler="apply_changes" last_modification_time="Tue, 28 Mar 2006 01:51:21 GMT"/>
+		  <accelerator key="A" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>

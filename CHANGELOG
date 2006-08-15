@@ -1,3 +1,7 @@
+14.8.2006
+  - Fixed bug with detecting Windows PLATFORM
+  - Vastly improved usability and keyboard shortcuts
+
 12.04.2006
   - Use windows environment variable for temp dir
   - Added commandline option to use sqlite2 instead of sqlite3
