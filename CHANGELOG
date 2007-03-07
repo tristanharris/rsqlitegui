@@ -1,3 +1,12 @@
+07.03.2007
+  - Added copy and paste functionality thanks to Benjamin Bock
+  - Support for BSD (thanks to suggestions from Viktor Vasilev and
+    Alexander Kahl)
+  - When creating a table, more than the primary_key column must
+    be specified
+  - Updated install.rb and README to correctly convey how the
+    application is installed (this directory is linked to)
+
 14.8.2006
   - Fixed bug with detecting Windows PLATFORM
   - Vastly improved usability and keyboard shortcuts

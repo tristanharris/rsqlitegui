@@ -3,8 +3,12 @@
 if ARGV[0] == "--help" or ARGV[0] == "help"
   print <<HELP
 Usage: ./install.rb [options]
-  This will install the rsqlitegui executable in /usr/local/bin
-  by default, but it can be changed with the --prefix option.
+  Remember to place this directory somewhere where it will not
+  be deleted!
+
+  This will create an executable that points to the current
+  directory in /usr/local/bin by default, but it can be changed
+  with the --prefix option
 
 Options:
   --prefix=[install_path]  path to install executable to

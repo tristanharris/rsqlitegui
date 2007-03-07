@@ -10,7 +10,10 @@ Requires:
 
 Install:
   Linux:
-    1. [sudo] ruby install.rb [--prefix=install_dir]
+    1. Place this directory someplace where it will not be deleted
+       (the installer creates an executable that points to this
+        directory)
+    2. [sudo] ruby install.rb [--prefix=install_dir]
   Windows:
     1. Nothing. Make shortcuts if you wish.
 

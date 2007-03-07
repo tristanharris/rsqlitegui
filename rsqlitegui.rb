@@ -5,7 +5,7 @@
 # it and/or modify it under the terms of the Ruby license
 # defined in the COPYING file
 
-# Copyright (c) 2006 Mitchell Foral. All rights reserved.
+# Copyright (c) 2006-2007 Mitchell Foral. All rights reserved.
 
 require 'gtk2'
 require 'libglade2'
@@ -30,7 +30,7 @@ class RSQLite
   end
 
   def new_database(widget=nil)
-    temp_file = PLATFORM =~ /linux/ ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + 'rsqlite_temp.db'
+    temp_file = PLATFORM =~ /linux|bsd/ ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + 'rsqlite_temp.db'
     File.open(temp_file, 'w') { '' }
     open_database(temp_file)
   end
@@ -78,7 +78,7 @@ class RSQLite
   end
 
   def quit(widget)
-    temp_file = PLATFORM =~ /linux/ ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + '\rsqlite_temp.db'
+    temp_file = PLATFORM =~ /linux|bsd/ ? '/tmp/rsqlite_temp.db' : ENV['TEMP'] + '\rsqlite_temp.db'
     FileUtils.remove(temp_file) if FileTest.exist?(temp_file)
     Gtk.main_quit
   end
@@ -192,6 +192,29 @@ class RSQLite
     display_fields_dialog(columns, 'Edit Row', values)
   end
 
+  def copy_row(widget, path=nil, column=nil)
+    path = @db_table.cursor[0] if path.nil?
+    return if path.nil?
+    iter = @db_table.model.get_iter(path)
+    columns = @conn.columns(current_table)
+    values = Array.new
+    columns.size.times { |i| values << iter.get_value(i) }
+    clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+    clipboard.text = values.join("\001")
+  end
+
+  def paste_row(widget)
+    return unless current_table
+    columns = @conn.columns(current_table)
+    clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+    values_text = clipboard.wait_for_text or ''
+    values = values_text.split("\001")
+    # NOTE: is this necessary? (submitted by Benjamin Bock)
+    # try to be intelligent: don't expect an id if there are fewer values than columns
+    values.unshift '' if columns.size > values.size
+    display_fields_dialog(columns, 'Paste Row', values, true)
+  end
+
   def remove_row(widget)
     path = @db_table.cursor[0]
     return if path.nil?
@@ -257,6 +280,7 @@ class RSQLite
     end
     @columns.model = Gtk::ListStore.new(String, String, String, String, String)
     @editing_table = editing
+    @glade['column_name'].grab_focus
   end
 
   def clear_column_details
@@ -303,6 +327,7 @@ class RSQLite
 
   def apply_changes(widget)
     if @editing_table
+      # TODO:
       # to find db changes, iterate through new columns and see if
       # they match with the old columns
     else
@@ -317,6 +342,10 @@ class RSQLite
         if column[:type] == 'primary_key'
           primary_key = column[:name]
           columns.delete(column)
+          if columns.size == 0
+            display_error_dialog("Please specifiy an additional column.")
+            return
+          end
           break
         end
       end
@@ -429,7 +458,8 @@ class RSQLite
     return ( input.strip.empty? ) ? nil : input
   end
 
-  def display_fields_dialog(fields, title='rSQLiteGUI', values=nil)
+  def display_fields_dialog(fields, title='rSQLiteGUI', values=nil, create=nil)
+    create = values.nil? if create.nil?
     window = Gtk::Window.new(title)
     window.modal = true
     window.set_border_width(5)
@@ -443,10 +473,10 @@ class RSQLite
     entries = Array.new
     primary_key = @conn.primary_key(current_table)
     fields.each_with_index do |field, i|
-      next if field.name == primary_key and values.nil? # don't fill in id when creating
+      next if field.name == primary_key and create # don't fill in id when creating
       label = Gtk::Label.new(field.name)
       entry = Gtk::Entry.new
-      entry.text = values[i] unless values.nil?
+      entry.text = values[i] or '' unless values.nil?
       entry.activates_default = true
       table.attach(label, 0, 1, i, i + 1, Gtk::FILL, Gtk::FILL, 5, 5)
       table.attach(entry, 1, 2, i, i + 1, Gtk::FILL | Gtk::EXPAND, Gtk::FILL | Gtk::EXPAND, 5, 5)
@@ -455,7 +485,7 @@ class RSQLite
     container.add_with_viewport(table)
 
     apply = Gtk::Button.new(Gtk::Stock::APPLY)
-    apply.signal_connect('clicked') { row_action(entries, values.nil?); window.destroy }
+    apply.signal_connect('clicked') { row_action(entries, create); window.destroy }
     cancel = Gtk::Button.new(Gtk::Stock::CANCEL)
     cancel.signal_connect('clicked') { window.destroy }
 
@@ -477,7 +507,7 @@ class RSQLite
 
   def row_action(entries, create=true)
     columns = @conn.columns(current_table).map { |column| column.name }
-    entries.map! { |entry| entry.text.gsub(/'/, "''").inspect }
+    entries.map! { |entry| "\"#{entry.text.gsub(/'/, "''")}\"" }
     primary_key = @conn.primary_key(current_table)
     if create
       columns.delete(primary_key)
@@ -506,7 +536,7 @@ class RSQLite
 
 end
 
-# Ruby-Gnome2-0.15 calls Gtk.init upon 'require'
+# Ruby-GTK >= 0.15 calls Gtk.init upon 'require'
 # of gtk2, passing ARGV, so process ARGV for this
 # application first
 BEGIN {

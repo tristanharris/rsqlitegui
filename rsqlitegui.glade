@@ -314,6 +314,42 @@
 	      </child>
 
 	      <child>
+		<widget class="GtkToolButton" id="tool_copy_row">
+		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Copy selected row
+[Ctrl+C]</property>
+		  <property name="stock_id">gtk-copy</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="copy_row" last_modification_time="Sat, 25 Mar 2006 14:34:40 GMT"/>
+		  <accelerator key="C" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+		<child>
+		<widget class="GtkToolButton" id="tool_paste_row">
+		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">Paste to new row
+[Ctrl+V]</property>
+		  <property name="stock_id">gtk-paste</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="paste_row" last_modification_time="Sat, 25 Mar 2006 14:34:27 GMT"/>
+		  <accelerator key="V" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
 		<widget class="GtkSeparatorToolItem" id="tool_sep2">
 		  <property name="visible">True</property>
 		  <property name="draw">True</property>
