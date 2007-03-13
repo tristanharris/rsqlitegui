@@ -1,3 +1,6 @@
+12.03.2007
+  - Fixed crash when saving as the same database file
+
 07.03.2007
   - Added copy and paste functionality thanks to Benjamin Bock
   - Support for BSD (thanks to suggestions from Viktor Vasilev and

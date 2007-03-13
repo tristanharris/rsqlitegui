@@ -70,6 +70,8 @@ class RSQLite
         @dbfile = dialog.filename
         @glade['rsqlite'].title = "rSQLiteGUI - #{@dbfile}"
         ActiveRecord::Base.establish_connection( { :adapter => @adapter, :dbfile => @dbfile } )
+      rescue ArgumentError
+        # same file
       rescue RuntimeError => error
         display_error_dialog(error)
       end
