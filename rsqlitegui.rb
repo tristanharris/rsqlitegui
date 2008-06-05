@@ -103,7 +103,7 @@ class RSQLite
     @db_table.columns.each { |column| @db_table.remove_column(column) }
     renderer = Gtk::CellRendererText.new
     columns.each_with_index do |column, i|
-      @db_table.append_column( Gtk::TreeViewColumn.new(column.name, renderer, :text => i) )
+      @db_table.append_column( Gtk::TreeViewColumn.new(column.name.gsub('_', '__'), renderer, :text => i) )
       @db_table.get_column(i).set_property('resizable', true)
     end
   end
@@ -513,8 +513,8 @@ class RSQLite
     primary_key = @conn.primary_key(current_table)
     if create
       columns.delete(primary_key)
-      sql = "insert into %s (%s) values(%s)" %
-              [ current_table, columns.join(','), entries.join(',') ]
+      sql = "insert into `%s` (`%s`) values(%s)" %
+              [ current_table, columns.join('`,`'), entries.join(',') ]
       begin
         @conn.insert(sql)
       rescue ActiveRecord::StatementInvalid => error
