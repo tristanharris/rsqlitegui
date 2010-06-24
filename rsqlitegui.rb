@@ -5,7 +5,7 @@
 # it and/or modify it under the terms of the Ruby license
 # defined in the COPYING file
 
-# Copyright (c) 2006-2007 Mitchell Foral. All rights reserved.
+# Copyright (c) 2006-2007 Mitchell. All rights reserved.
 
 require 'gtk2'
 require 'libglade2'

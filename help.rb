@@ -18,7 +18,7 @@ STDOUT.print <<HELP
     the database as soon as an action is performed.
     Most importantly, there is NO undo function.
 
-    Also, having an id (or other primary key) column
+#    Also, having an id (or other primary key) column
     is very important to ActiveRecord. By default when
     creating a table in the GUI, a primary key is
     created for you if you haven't specified one, but
