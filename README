@@ -4,7 +4,6 @@ Ruby SQLite GUI
 Requires:
   - Ruby of course (http://ruby-lang.org)
   - Ruby/Gtk2 (http://ruby-gnome2.sourceforge.jp)
-  - Ruby/libglade2 (http://ruby-gnome2.sourceforge.jp)
   - Ruby/SQLite (http://rubyforge.org/projects/sqlite-ruby)
   - ActiveRecord (http://rubyforge.org/projects/activerecord)
 
