@@ -46,7 +46,7 @@ class RSQLite
 
   def open_database(dbfile)
     begin
-      ActiveRecord::Base.establish_connection( { :adapter => @adapter, :dbfile => dbfile } )
+      ActiveRecord::Base.establish_connection( { :adapter => @adapter, :database => dbfile } )
       @conn = ActiveRecord::Base.connection
     rescue ActiveRecord::AdapterNotFound
       display_error_dialog("The #{@adapter} adapter is not installed.")
