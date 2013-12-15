@@ -166,7 +166,8 @@ class RSQLite
       end
       formatted = String.new
       case out
-      when String: formatted = out
+      when String
+        formatted = out
       when Array
         out.each do |item|
           item.delete_if { |k, v| k.is_a? Integer }
