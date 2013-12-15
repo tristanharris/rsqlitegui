@@ -8,7 +8,6 @@
 # Copyright (c) 2006-2007 Mitchell. All rights reserved.
 
 require 'gtk2'
-require 'libglade2'
 require 'fileutils'
 begin require 'rubygems'; rescue LoadError; end
 begin
@@ -20,7 +19,9 @@ end
 
 class RSQLite
   def initialize(adapter='sqlite3')
-    @glade = GladeXML.new( File.join( File::dirname(__FILE__), 'rsqlitegui.glade' ) ) { |handler| method(handler) }
+    @glade = Gtk::Builder.new
+    @glade.add_from_file(File.join( File::dirname(__FILE__), 'rsqlitegui.xml' ))
+    @glade.connect_signals { |handler| method(handler) }
     @tables   = @glade['tables']
     @db_table = @glade['table']
     @columns  = @glade['columns']
@@ -117,7 +118,7 @@ class RSQLite
     columns.map! { |column| column.name }
     rows.each do |row|
       iter = @db_table.model.append
-      row.each { |key, value| iter.set_value( columns.index(key), value ) }
+      row.each { |key, value| iter.set_value( columns.index(key), value.to_s ) }
     end
   end
 
